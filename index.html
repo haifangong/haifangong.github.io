@@ -1,366 +1,429 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-<link rel="shortcut icon" href="myIcon.ico">
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+import React, { useState, useEffect } from 'react';
+import { 
+  Mail, 
+  Github, 
+  Award, 
+  BookOpen, 
+  Newspaper, 
+  User,
+  ChevronDown,
+  ChevronUp,
+  MapPin,
+  Globe,
+  Briefcase
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-<meta name="keywords" content="gonghaifan, cs">
-<meta name="description" content="Gong Haifan's homepage">
-<link rel="stylesheet" href="jemdoc.css" type="text/css">
-<title>Gong Haifan's homepage</title>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+const SectionTitle = ({ children, icon: Icon }) => (
+  <div className="flex items-center gap-3 mb-6 mt-12 border-b border-slate-200 pb-2">
+    <Icon className="w-5 h-5 text-blue-600" />
+    <h2 className="text-xl font-bold text-slate-800 tracking-tight">{children}</h2>
+  </div>
+);
 
-  ga('create', 'UA-87320911-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    .conference, .journal {
-        font-size: 16px;
-        line-height: 1.5;
-    }
-    .authors {
-        font-style: italic;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    .conference-title, .journal-title {
-        font-weight: bold;
-    }
-</style>
-</head>
-<body>
-<div id="layout-content" style="margin-top:25px">
-<table>
-	<tbody>
-		<tr>
-			<td width="670">
-				<div id="toptitle">					
-					<h1><font face="Arial"> Haifan Gong </font></h1>
-				</div>
-
-				<h3><font face="Arial"> PhD, PostDoctor Researcher</font></h3>
-				<p><font face="Arial"> 
-					CBICA, <br>
-					Perelman School of Medicine, <br>
-					University of Pennsylvia, <br>
-					PA, USA <br>
-					<br>
-					<em>Email: <a href="mailto:haifangong@outlook.com">haifangong@outlook.com</a></em> <br>
-					<p><font face="Arial"><a href="https://scholar.google.com/citations?user=PA98BRcAAAAJ&hl=en"><b>Google Scholar</b></a></font></p>
-				</font></p>
-			</td>
-			<td>
-				<img src="./pic/duadua.jpg" border="0" width="240"><br>
-			</td>
-		</tr><tr>
-	</tr></tbody>
-</table>
-
-<br />
-<br />
-
-<p style="text-align:justify; font-family:Arial;">
-    I am currently a PostDoctor Researcher at UPenn, working with <a herf="https://www.tianyuhan.ai/"> Tianyu Han</a> at CBICA. 
-	Before that, I received my PhD degree in Computer Information Engineering at <a href="https://www.cuhk.edu.cn/">The Chinese University of Hong Kong, Shenzhen</a> in 2025.7, supervised by Prof. <a href="http://haofengli.net/" target="_blank">Haofeng Li</a>, <a href="https://www.sribd.cn/" target="_blank">Wan Xiang</a> at SRIBD, and Prof. <a href="https://mypage.cuhk.edu.cn/academics/wangdong/index.html" target="_blank">Dong Wang</a> at SSE.
-    I received my Master degree in Computer Engineering from <a href="http://www.sysu.edu.cn">Sun Yat-sen University (SYSU)</a> in 2022.7, supervised by Prof. <a href="http://guanbinli.com/" target="_blank">Guanbin Li</a> at the HCP Lab.
-</p>
-<p style="font-family:Arial;">
-    My research interests include LLM for health, domain generalization, multi-modal learning, medical imaging analysis, and bioinformatics.
-</p>
-
-<h2><font face="Arial"> News </font></h2>
-<ul style="list-style-type:none">
-   <p style="margin-left: 0px; line-height: 150%; margin-top: 8px; margin-bottom: 8px;"><font face="Arial" size="3">
-	   [12/2025] One paper was accepted to Biomaterials (JCR Q1, IF 12.9) <br>
-	   [10/2025] One paper was accepted to ESWA (JCR Q1) <br>
-	   [09/2025] One paper was accepted to NeurIPS (CCF A), while one paper was invited by Patterns (Cell Press) <br>
-	   [04/2025] One paper was accepted to IEEE JBHI (JCR Q1, Famous journal in medical imaging analysis) <br>
-	   [02/2025] One paper was accepted to IEEE TMI (JCR Q1, Top journal in medical imaging analysis) <br>
-	   [01/2025] One paper was accepted to AAAI (CCF A) with Oral presentation (Top 4%), another paper was accepted to ISBI also with Oral presentation (Top 15%) <br>
-	   [08/2024] One paper was accepted to IEEE TMI (JCR Q1, Top journal in medical imaging analysis) <br>
-	   [03/2024] One paper was accepted to ICME with Oral presentation (Top 15%) <br>
-	   [09/2023] One paper was accepted to Bioinformatics (JCR Q1, Famous journal in bioinformatics) <br>
-	   [06/2023] Two papers were accepted to MICCAI 2023 with one early accepted (Top 14%) <br>
-	   [06/2023] One paper was accepted to Nature Communications <br>
-	   [11/2022] One paper was accepted to Computers in Biology and Medicine (JCR Q1, IF: 7.0) <br>
-	   [10/2022] One paper was accepted to Cell Reports Physical Science (JCR Q1, IF: 8.9, Cell Press) <br>
-       [07/2022] One paper was accepted to ACM CSUR (JCR Q1, IF: 28.0) <br>
-	   [06/2022] One paper was accepted to IEEE TMI (JCR Q1, Top journal in medical imaging analysis) <br>
-	   [05/2022] One paper was early accepted to MICCAI 2022 with Student Travel Award (Top 4%) <br>
-	   [11/2021] Our paper won the Best Poster Prize at ICMR 2021 <br>
-	   [05/2021] I have joined Shanghai AI Lab as a research intern <br>
-	   [05/2021] We won the first prize at ImageCLEF VQA-Med-2021 challenge [<a href="http://ceur-ws.org/Vol-2936/paper-99.pdf">Full Text</a>] <br>
-   </font></p>
-</ul>
-
-
-
-<h2><font face="Arial"> Publications </font></h2>
-<p>* denotes equal contribution, # denotes corresponding author</p>
-    <h3>Journals</h3>
-    <ul>
-		<li>
-            <p class="journal">
-                <span class="journal-title">AI Agent-based Discovery of D-enantiomeric Antimicrobial Peptides against Multidrug-Resistant Bacterial Infection</span><br>
-                <span class="authors">Qinzhou Kong*, Yinuo Zhao*, <b>Haifan Gong*</b>, Luoyao Kang*, ..., and Yanqing Li.</span><br>
-                Biomaterials, 2025<br>
-                [<a href="https://www.sciencedirect.com/science/article/pii/S0957417425037017">Full Text</a>]
-                [<a href="https://github.com/kangluoyao/PeptiD-Agent">Code</a>]
-            </p>
-		</li>
-		<li>
-            <p class="journal">
-                <span class="journal-title">Costal Cartilage Segmentation with Topology Guided Deformable Mamba: Method and Benchmark</span><br>
-                <span class="authors">Senmao Wang*, <b>Haifan Gong*</b>, Runmeng Cui, Boyao Wan, ..., Haiyue Jiang, and Lin Lin.</span><br>
-                Expert Systems With Applications, 2025<br>
-                [<a href="https://www.sciencedirect.com/science/article/pii/S0957417425037017">Full Text</a>]
-                [<a href="https://github.com/EricwanAR/DeformableMambaSeg">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">Boundary as the Bridge: Towards Heterogeneous Partially-labeled Medical Image Segmentation and Landmark Detection</span><br>
-                <span class="authors"><b>Haifan Gong</b>, Boyao Wan, Luoyao Kang, Xiang Wan, Lingyan Zhang, and Haofeng Li.</span><br>
-                IEEE Transactions on Medical Imaging (<b>Top journal in medical image analysis</b>), 2025<br>
-                [<a href="https://ieeexplore.ieee.org/document/10915612/">Full Text</a>]
-                [<a href="https://github.com/lhaof/HPL">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title"> Fetal Cerebellum Landmark Detection Based on 3D MRI: Method and Benchmark </span> <br> 
-                <span class="authors"><b>Haifan Gong*</b>, Huixian Liu*, Yitao Wang, Xiaoling Liu, Xiang Wan, Qiao Shi, and Haofeng Li.</span><br>
-                IEEE Journal of Biomedical and Health Informatics, 2025<br>
-                [<a href="https://ieeexplore.ieee.org/document/10960623">Full Text</a>]
-                [<a href="https://github.com/lhaof/LFC">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">BCNet: Bronchus Classification via Structure Guided Representation Learning</span><br>
-                <span class="authors">Wenhao Huang*, <b>Haifan Gong</b>*, Huan Zhang, Yu Wang, Xiang Wan, Guanbin Li, Haofeng Li, and Hong Shen.</span><br>
-                IEEE Transactions on Medical Imaging (<b>Top journal in medical image analysis</b>), 2024<br>
-                [<a href="https://ieeexplore.ieee.org/abstract/document/10644043/">Full Text</a>]
-				[<a href="https://osf.io/pskr9/">Data</a>]
-                [<a href="https://www.infervision.com/">Working with InferVision</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">Unbiased Curriculum Learning Enhanced Global-Local Graph Neural Network for Protein Thermodynamic Stability Prediction</span><br>
-                <span class="authors"><b>Haifan Gong</b>*, Yumeng Zhang*, Chenhe Dong, Yue Wang, ..., Lanxuan Liu, Jie Xu, Guanbin Li.</span><br>
-                Bioinformatics, 2023<br>
-                [<a href="https://academic.oup.com/bioinformatics/article/39/10/btad589/7280695">Full Text</a>]
-                [<a href="https://github.com/haifangong/UCL-GLGNN">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">Bile Acid-dependent Transcription Factors and Chromatin Accessibility Determine Regional Heterogeneity of Intestinal Antimicrobial Peptides</span><br>
-                <span class="authors">Yue Wang, Yanbo Yu, Lixiang Li, Mengqi Zheng, Jiawei Zhou, <b>Haifan Gong</b>, et al.</span><br>
-                Nature Communications (<b>Nature Press</b>), 2023<br>
-                [<a href="https://www.nature.com/articles/s41467-023-40565-7">Full Text</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">VQAMix: Conditional Triplet Mixup for Medical Visual Question Answering</span><br>
-                <span class="authors"><b>Haifan Gong</b>*, Guanqi Chen*, Mingzhi Mao, Zhen Li, and Guanbin Li.</span><br>
-                IEEE Transactions on Medical Imaging (<b>Top journal in medical image analysis</b>), 2022<br>
-                [<a href="https://ieeexplore.ieee.org/abstract/document/9802503/">Full Text</a>]
-                [<a href="https://github.com/haifangong/VQAMix">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">Thyroid Region Prior Guided Attention for Ultrasound Segmentation of Thyroid Nodules</span> <span style="color: red; font-weight: bold;"> (ESI Highly Cited) </span> <br>
-                <span class="authors"><b>Haifan Gong</b>, Jiaxin Chen, Guanqi Chen, Haofeng Li, Guanbin Li and Fei Chen.</span><br>
-                Computers in Biology and Medicine, 2022<br>
-                [<a href="https://www.sciencedirect.com/science/article/pii/S0010482522010976">Full Text</a>]
-                [<a href="https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">Understanding the Effectiveness of Enzyme Pre-reaction State by a Quantum-based Machine Learning Model</span><br>
-                <span class="authors">Shenggan Luo, Lanxuan Liu, Chu-Jun Lyu, Byuri Sim, Yihan Liu, <b>Haifan Gong</b>, Yao Nie, Yilei Zhao.</span><br>
-                Cell Reports Physical Science (<b>Cell Press</b>), 2022<br>
-                [<a href="https://www.sciencedirect.com/science/article/pii/S2666386422004301">Full Text</a>]
-            </p>
-        </li>
-    </ul>
-
-    <h3>Conferences</h3>
-    <ul>
-		<li>
-            <p class="conference">
-                <span class="conference-title">Intermediate Domain Alignment and Morphology Analogy for Patent-Product Image Retrieval</span> <span style="color: orange; font-weight: bold;"> </span> <br> 
-                <span class="authors"><b>Haifan Gong*</b>, Xuanye Zhang*, Ruifei Zhang, Yun Su, Zhuo Li, Yuhao Du, Anningzhe Gao, Xiang Wan, Haofeng Li </span><br>
-                Neural Information Processing Systems (<b>NeurIPS</b>), 2025<br>
-                [<a href="https://openreview.net/pdf?id=vE98S8BmzP">Full Text</a>]
-                [<a href="https://loslorien.github.io/idama-project/">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">Domain Generalized Medical Landmark Detection via Robust Boundary-aware Pre-training </span> <span style="color: orange; font-weight: bold;"> (Oral) </span> <br> 
-                <span class="authors"><b>Haifan Gong</b>, Yu Lu, Xiang Wan, and Haofeng Li.</span><br>
-                AAAI Conference on Artificial Intelligence (<b>AAAI</b>), 2025<br>
-                [<a href="https://ojs.aaai.org/index.php/AAAI/issue/view/626">Full Text</a>]
-                [<a href="https://github.com/lhaof/DGMLD">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">nnMamba: 3D Biomedical Image Segmentation, Classification and Landmark Detection With State Space Model </span> <span style="color: orange; font-weight: bold;"> (Oral) </span> <br> 
-                <span class="authors"><b>Haifan Gong</b>, Luoyao Kang, Yitao Wang, Yihan Wang, Xiang Wan, Xusheng Wu, and Haofeng Li.</span><br>
-                IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2025<br>
-                [<a href="https://arxiv.org/pdf/2402.03526">Full Text</a>]
-                [<a href="https://github.com/lhaof/nnMamba">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">Intensity Confusion Matters: An Intensity-distance Guided Loss for Bronchus Segmentation</span> <span style="color: orange; font-weight: bold;"> (Oral) </span> <br>
-                <span class="authors"><b>Haifan Gong</b>*, Wenhao Huang*, Huan Zhang, Yu Wang, Xiang Wan, Hong Shen, Guanbin Li, and Haofeng Li.</span><br>
-                IEEE International Conference on Multimedia and Expo (<b>ICME</b>), 2024<br>
-                [<a href="https://arxiv.org/pdf/2406.16150">Full Text</a>]
-				[<a href="https://osf.io/pskr9/">Data</a>]
-                [<a href="https://www.infervision.com/">Working with InferVision</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">ASC: Appearance and Structure Consistency for Unsupervised Domain Adaptation in Fetal Brain MRI Segmentation</span><br>
-                <span class="authors">Zihang Xu*, <b>Haifan Gong</b>*, Xiang Wan and Haofeng Li.</span><br>
-                Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023<br>
-                [<a href="https://arxiv.org/abs/2310.14172">Full Text</a>]
-                [<a href="https://github.com/lhaof/ASC">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">Visual-Attribute Prompt Learning for Progressive Mild Cognitive Impairment Prediction</span><span style="font-weight: bold;"> (Early Accept) </span><br>
-                <span class="authors">Luoyao Kang*, <b>Haifan Gong</b>*, Xiang Wan and Haofeng Li.</span><br>
-                Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023<br>
-                [<a href="https://arxiv.org/abs/2310.14158">Full Text</a>]
-                [<a href="https://github.com/lhaof/VAPL">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">Less is More: Adaptive Curriculum Learning for Thyroid Nodule Diagnosis</span> <span style="color: red; font-weight: bold;"> (Student Travel Award) </span> <span style="font-weight: bold;"> (Early Accept) </span>  <br>
-                <span class="authors"><b>Haifan Gong</b>*, Hui Cheng*, Yifan Xie, Shuangyi Tan, Guanqi Chen, Fei Chen, Guanbin Li</span> <br>
-                Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2022<br>
-                [<a href="https://arxiv.org/pdf/2207.00807.pdf">Full Text</a>]
-                [<a href="https://github.com/chenghui-666/ACL">Code</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">Cross-Modal Self-Attention with Multi-Task Pre-Training for Medical Visual Question Answering</span> <span style="color: red; font-weight: bold;"> (Best Poster Paper) </span><br>
-                <span class="authors"><b>Haifan Gong</b>*, Guanqi Chen*, Yizhou Yu, Guanbin Li</span><br>
-                ACM International Conference on Multimedia Retrieval (<b>ICMR</b>), 2021<br>
-                [<a href="https://www.researchgate.net/publication/351229736_Cross-Modal_Self-Attention_with_Multi-Task_Pre-Training_for_Medical_Visual_Question_Answering">Full Text</a>]
-                [<a href="https://github.com/haifangong/CMSA-MTPT-4-MedicalVQA">Code</a>]
-                [<a href="https://blog.csdn.net/weixin_42653320/article/details/118380578">中译版(非官方)</a>]
-            </p>
-        </li>
-        <li>
-            <p class="conference">
-                <span class="conference-title">Multi-task Learning for Thyroid Nodule Segmentation with Thyroid Region Prior</span><br>
-                <span class="authors"><b>Haifan Gong</b>, Guanqi Chen, Ranran Wang, Xiang Xie, Mingzhi Mao, Yizhou Yu, Fei Chen, and Guanbin Li.</span><br>
-                IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2021<br>
-                [<a href="https://www.sysu-hcp.net/userfiles/files/2022/02/16/f026aebf6c5cda97.pdf">Full Text</a>]
-                [<a href="https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation">Code</a>]
-            </p>
-        </li>
-    </ul>
-
-    <h3>Invited Paper and Survery</h3>
-    <ul>
-        <li>
-            <p class="journal">
-                <span class="journal-title">Plug-and-play Computational Method for Advancing Natural and Biomedical Image Representation</span> <br>
-                <span class="authors"> <b>Haifan Gong#</b>, Tianyu Han, Guanbin Li.</span><br>
-                Patterns (<b>Cell Press</b>), 2025<br>
-                [<a href="https://www.cell.com/action/showPdf?pii=S2666-3899%2825%2900260-0">Full Text</a>]
-            </p>
-        </li>
-        <li>
-            <p class="journal">
-                <span class="journal-title">A Survey of Natural Language Generation</span> <br>
-                <span class="authors">Chenhe Dong, Yinghui Li, <b>Haifan Gong</b>, Miaoxin Chen, Junxin Li, Ying Shen, Min Yang.</span> <span style="color: red; font-weight: bold;"> (ESI Highly Cited) </span> <br>
-                ACM Computing Surveys (<b>ACM CSUR</b>), 2022<br>
-                [<a href="https://arxiv.org/pdf/2112.11739.pdf">Full Text</a>]
-                [<a href="https://dl.acm.org/doi/10.1145/3554727">Official Full Text</a>]
-            </p>
-        </li>
-	</ul>
-	
-<h2><font face="Arial"> Honors &amp; Awards </font></h2>
-
-   <ul style="list-style-type:none">
-   <p style="line-height: 120%; margin-left: 0px; margin-top: 8pt; margin-bottom: 8pt;"> <font face="Arial" size="3">
-      <li>
-        2023 MICCAI Outstanding Reviewer Award Honerable Mentions (Top 2%) [<a href="https://conferences.miccai.org/2023/en/MICCAI-2023-OUTSTANDING-REVIEWERS-AWARDS.html">Link</a>]
-      </li>
-      <li>
-        2022 MICCAI Student Travel Award (Top 4%) [<a href="https://conferences.miccai.org/2022/en/MICCAI-2022-STUDENT-TRAVEL-AWARDS.html">Link</a>]
-      </li>
-      <li>
-        2021 ICMR Best Poster Paper Award (CCF B) [<a href="https://www.acm.org/conferences/best-paper-awards">Link</a>]
-      </li>
-	  <li>
-        2021 ImageCLEF Medical VQA Competation, First Prize
-	  </li>
-	  <li>
-        2020 Distinguished graduates in NCU (10/10000)
-	  </li>
-
-      </font></p>
-    </ul>
-
-
-<h2><font face="Arial"> Professional Activities </font></h2>
-<ul style="list-style-type:none">
-<p style="line-height: 120%; margin-left: 0px; margin-top: 8pt; margin-bottom: 8pt;"> <font face="Arial" size="3">
-    <li> Member of IEEE, ACM, AAAI, and MICCAI.
-    </li>
-    <li>
-        Reviewer for npj Digital Medicine, Patterns, Artificial Intelligence in Medicine, IEEE Trans. on OE, IEEE IoT Journal, The Visual Computer, IEEE Access, Scientific Reports
-    </li>
-    <li>
-	    Regular Reviewer for NeurIPS, ICML, ICLR, CVPR, ICCV, AAAI, MICCAI, AISTAT, etc. since 2024.
-    </li>
-</font></p>
-</ul>
-
-<div id="footer">
-	<div id="footer-text"></div>
-
-        <p><center>
-      	<div id="clustrmaps-widget" style="width:10%">
-
-			<script type="text/javascript" id="clstr_globe" src="//cdn.clustrmaps.com/globe.js?d=RFw36KvhGjqV4Z6TT3tINTH5UGaAa3jQVK2psPZZa-8"></script>
-	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-	<span id="busuanzi_container_site_pv"> Total views: <span id="busuanzi_value_site_pv"></span> </span>
-
+const PublicationItem = ({ title, authors, venue, links, badges }) => {
+  const fullTextLink = links.find(l => l.label === 'Full Text' || l.label === 'Official Full Text')?.url;
+  
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="mb-6 group"
+    >
+      <div className="mb-1">
+        <a 
+          href={fullTextLink} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2"
+        >
+          {title}
+        </a>
+        {/* Badges placed AFTER the title, smaller size */}
+        <span className="inline-flex flex-wrap gap-1 align-middle">
+          {badges?.map((badge, i) => (
+            <span key={i} className={`inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight ${
+              badge.type === 'red' ? 'bg-red-100 text-red-700' : 
+              badge.type === 'orange' ? 'bg-orange-100 text-orange-700' : 
+              'bg-blue-100 text-blue-700'
+            }`}>
+              {badge.text}
+            </span>
+          ))}
+        </span>
+      </div>
+      
+      <p className="text-slate-600 text-sm mb-1" dangerouslySetInnerHTML={{ __html: authors.replace('Haifan Gong', '<strong>Haifan Gong</strong>') }} />
+      
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+        <span className="text-slate-500 italic" dangerouslySetInnerHTML={{ __html: venue }} />
+        <div className="flex gap-2">
+          {links.map((link, i) => (
+            <a 
+              key={i} 
+              href={link.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-blue-600 hover:underline font-medium text-[11px]"
+            >
+              [{link.label}]
+            </a>
+          ))}
         </div>
-	<p><center><font face="Arial">
-        <br>
-            &copy; Haifan Gong | Last updated: Dec. 2025
-        </font></center></p>
+      </div>
+    </motion.div>
+  );
+};
 
-</div>
-</body>
-</html>
+const App = () => {
+  const [isNewsExpanded, setIsNewsExpanded] = useState(false);
+
+  useEffect(() => {
+    const busuanziScript = document.createElement('script');
+    busuanziScript.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    busuanziScript.async = true;
+    document.body.appendChild(busuanziScript);
+
+    const clustrScript = document.createElement('script');
+    clustrScript.type = "text/javascript";
+    clustrScript.id = "clstr_globe";
+    clustrScript.src = "//cdn.clustrmaps.com/globe.js?d=RFw36KvhGjqV4Z6TT3tINTH5UGaAa3jQVK2psPZZa-8";
+    const container = document.getElementById('clustrmaps-container');
+    if (container) container.appendChild(clustrScript);
+
+    return () => {
+      if (document.body.contains(busuanziScript)) document.body.removeChild(busuanziScript);
+    };
+  }, []);
+
+  const allNews = [
+    { date: '12/2025', text: 'One paper was accepted to Biomaterials (Q1, IF 12.9), another paper was accepted to ESWA (Q1, IF 7.5)' },
+    { date: '09/2025', text: 'One paper was accepted to NeurIPS (CCF A), another paper was invited by Patterns (Cell Press)' },
+    { date: '04/2025', text: 'One paper was accepted to IEEE JBHI (Q1, Famous journal in medical imaging analysis)' },
+    { date: '02/2025', text: 'One paper was accepted to IEEE TMI (Q1, Top journal in medical imaging analysis)' },
+    { date: '01/2025', text: 'One paper was accepted to AAAI (CCF A) with Oral presentation (Top 4%), another paper was accepted to ISBI also with Oral presentation (Top 15%)' },
+    { date: '08/2024', text: 'One paper was accepted to IEEE TMI (Q1, Top journal in medical imaging analysis)' },
+    { date: '03/2024', text: 'One paper was accepted to ICME with Oral presentation (Top 15%)' },
+    { date: '09/2023', text: 'One paper was accepted to Bioinformatics (Q1, Famous journal in bioinformatics)' },
+    { date: '06/2023', text: 'Two papers were accepted to MICCAI 2023 with one early accepted (Top 14%)' },
+    { date: '06/2023', text: 'One paper was accepted to Nature Communications' },
+  ];
+
+  const displayedNews = isNewsExpanded ? allNews : allNews.slice(0, 5);
+
+  return (
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100">
+      <header className="bg-slate-50 border-b border-slate-200">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+            <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Haifan Gong</h1>
+            <p className="text-xl text-blue-600 font-semibold mb-6">PhD, PostDoctoral Researcher</p>
+            
+            <div className="flex items-center gap-3 text-slate-600 mb-6">
+              <MapPin className="w-4 h-4 text-slate-400" />
+              <span className="text-sm">CBICA, AIBIL, Perelman School of Medicine, University of Pennsylvania, PA, USA</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-medium">
+              <a href="https://scholar.google.com/citations?user=PA98BRcAAAAJ&hl=en" className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+                <Globe className="w-4 h-4" /> Google Scholar
+              </a>
+              <a href="https://github.com/haifangong" className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+                <Github className="w-4 h-4" /> GitHub
+              </a>
+              <a href="mailto:haifangong@outlook.com" className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+                <Mail className="w-4 h-4" /> haifangong@outlook.com
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-6 py-8">
+        <section>
+          <SectionTitle icon={User}>Biography</SectionTitle>
+          <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed">
+            <p className="mb-4"> 
+              I am currently a PostDoctoral Researcher at <strong>UPenn</strong>, working with 
+              <a href="https://www.tianyuhan.ai/" className="text-blue-600 hover:underline mx-1">Tianyu Han</a> at <a href="https://aibil.med.upenn.edu/people/" className="text-blue-600 hover:underline mx-1">AIBIL</a>
+              I received my PhD degree in Computer Information Engineering at 
+              <a href="https://www.cuhk.edu.cn/" className="text-blue-600 hover:underline mx-1">The Chinese University of Hong Kong, Shenzhen</a> in 2025.7, supervised by <a href="http://haofengli.net/" target="_blank">Haofeng Li</a>, <a href="https://www.sribd.cn/" target="_blank">Wan Xiang</a>, and <a href="https://mypage.cuhk.edu.cn/academics/wangdong/index.html" target="_blank">Dong Wang</a>.
+              Previously, I received my Master's degree from <strong>Sun Yat-sen University (SYSU)</strong> in 2022.7, supervised by <a href="http://guanbinli.com/" target="_blank">Guanbin Li</a>.
+            </p>
+            <p className="text-slate-800 font-medium bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <span className="text-blue-700 font-bold uppercase text-xs block mb-1">Research Interests</span>
+              LLM for health, domain generalization, multi-modal learning, medical imaging analysis, and bioinformatics.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <SectionTitle icon={Newspaper}>News</SectionTitle>
+          <div className="space-y-3">
+            <AnimatePresence initial={false}>
+              {displayedNews.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-3 text-sm">
+                  <span className="font-bold text-blue-500 whitespace-nowrap">[{item.date}]</span>
+                  <p className="text-slate-700">{item.text}</p>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            <button 
+              onClick={() => setIsNewsExpanded(!isNewsExpanded)}
+              className="mt-2 flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-blue-600 uppercase tracking-widest"
+            >
+              {isNewsExpanded ? <><ChevronUp className="w-3 h-3" /> Less</> : <><ChevronDown className="w-3 h-3" /> More News</>}
+            </button>
+          </div>
+        </section>
+
+        <section>
+          <SectionTitle icon={BookOpen}>Publications</SectionTitle>
+          
+          <div className="space-y-12">
+            <div>
+              <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
+                <div className="h-px flex-1 bg-slate-100"></div> Journals <div className="h-px flex-1 bg-slate-100"></div>
+              </h3>
+              
+              <PublicationItem 
+                title="AI Agent-based Discovery of D-enantiomeric Antimicrobial Peptides against Multidrug-Resistant Bacterial Infection"
+                authors="Qinzhou Kong*, Yinuo Zhao*, Haifan Gong*, Luoyao Kang*, ..., and Yanqing Li."
+                venue="Biomaterials, 2025"
+                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 12.9', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S0142961225008476'}, {label: 'Code', url: 'https://github.com/kangluoyao/PeptiD-Agent'}]}
+              />
+
+              <PublicationItem 
+                title="Costal Cartilage Segmentation with Topology Guided Deformable Mamba: Method and Benchmark"
+                authors="Senmao Wang*, Haifan Gong*, Runmeng Cui, Boyao Wan, ..., Haiyue Jiang, and Lin Lin."
+                venue="Expert Systems With Applications, 2025"
+                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 7.5', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S0957417425037017'}, {label: 'Code', url: 'https://github.com/EricwanAR/DeformableMambaSeg'}]}
+              />
+
+              <PublicationItem 
+                title="Boundary as the Bridge: Towards Heterogeneous Partially-labeled Medical Image Segmentation and Landmark Detection"
+                authors="Haifan Gong, Boyao Wan, Luoyao Kang, Xiang Wan, Lingyan Zhang, and Haofeng Li."
+                venue="IEEE Transactions on Medical Imaging, 2025"
+                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 11.3', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/document/10915612/'}, {label: 'Code', url: 'https://github.com/lhaof/HPL'}]}
+              />
+
+              <PublicationItem 
+                title="Fetal Cerebellum Landmark Detection Based on 3D MRI: Method and Benchmark"
+                authors="Haifan Gong*, Huixian Liu*, Yitao Wang, Xiaoling Liu, Xiang Wan, Qiao Shi, and Haofeng Li."
+                venue="IEEE Journal of Biomedical and Health Informatics, 2025"
+                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 6.8', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/document/10960623'}, {label: 'Code', url: 'https://github.com/lhaof/LFC'}]}
+              />
+
+              <PublicationItem 
+                title="BCNet: Bronchus Classification via Structure Guided Representation Learning"
+                authors="Wenhao Huang*, Haifan Gong*, Huan Zhang, Yu Wang, Xiang Wan, Guanbin Li, Haofeng Li, and Hong Shen."
+                venue="IEEE Transactions on Medical Imaging, 2024"
+                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 11.3', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/abstract/document/10644043/'}, {label: 'Data', url: 'https://osf.io/pskr9/'}]}
+              />
+
+              <PublicationItem 
+                title="Unbiased Curriculum Learning Enhanced Global-Local Graph Neural Network for Protein Thermodynamic Stability Prediction"
+                authors="Haifan Gong*, Yumeng Zhang*, Chenhe Dong, Yue Wang, ..., Lanxuan Liu, Jie Xu, Guanbin Li."
+                venue="Bioinformatics, 2023"
+                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 5.4', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://academic.oup.com/bioinformatics/article/39/10/btad589/7280695'}, {label: 'Code', url: 'https://github.com/haifangong/UCL-GLGNN'}]}
+              />
+
+              <PublicationItem 
+                title="Bile Acid-dependent Transcription Factors and Chromatin Accessibility Determine Regional Heterogeneity of Intestinal Antimicrobial Peptides"
+                authors="Yue Wang, Yanbo Yu, Lixiang Li, Mengqi Zheng, Jiawei Zhou, Haifan Gong, et al."
+                venue="Nature Communications, 2023"
+                badges={[{text: 'Nature Press', type: 'orange'}, {text: 'Top Journal', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://www.nature.com/articles/s41467-023-40565-7'}]}
+              />
+
+              <PublicationItem 
+                title="VQAMix: Conditional Triplet Mixup for Medical Visual Question Answering"
+                authors="Haifan Gong*, Guanqi Chen*, Mingzhi Mao, Zhen Li, and Guanbin Li."
+                venue="IEEE Transactions on Medical Imaging, 2022"
+                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 11.3', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/abstract/document/9802503/'}, {label: 'Code', url: 'https://github.com/haifangong/VQAMix'}]}
+              />
+
+              <PublicationItem 
+                title="Thyroid Region Prior Guided Attention for Ultrasound Segmentation of Thyroid Nodules"
+                authors="Haifan Gong, Jiaxin Chen, Guanqi Chen, Haofeng Li, Guanbin Li and Fei Chen."
+                venue="Computers in Biology and Medicine, 2022"
+                badges={[{text: 'ESI Highly Cited', type: 'red'}, {text: 'Q1', type: 'blue'}, {text: 'IF 7.0', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S0010482522010976'}, {label: 'Code', url: 'https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation'}]}
+              />
+
+              <PublicationItem 
+                title="Understanding the Effectiveness of Enzyme Pre-reaction State by a Quantum-based Machine Learning Model"
+                authors="Shenggan Luo, Lanxuan Liu, Chu-Jun Lyu, Byuri Sim, Yihan Liu, Haifan Gong, Yao Nie, Yilei Zhao."
+                venue="Cell Reports Physical Science, 2022"
+                badges={[{text: 'Cell Press', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S2666386422004301'}]}
+              />
+            </div>
+
+            <div>
+              <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
+                <div className="h-px flex-1 bg-slate-100"></div> Conferences <div className="h-px flex-1 bg-slate-100"></div>
+              </h3>
+              
+              <PublicationItem 
+                title="Intermediate Domain Alignment and Morphology Analogy for Patent-Product Image Retrieval"
+                authors="Haifan Gong*, Xuanye Zhang*, Ruifei Zhang, Yun Su, Zhuo Li, Yuhao Du, Anningzhe Gao, Xiang Wan, Haofeng Li"
+                venue="Neural Information Processing Systems (<b>NeurIPS</b>), 2025"
+                badges={[{text: 'CCF A', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://openreview.net/pdf?id=vE98S8BmzP'}, {label: 'Code', url: 'https://loslorien.github.io/idama-project/'}]}
+              />
+
+              <PublicationItem 
+                title="Domain Generalized Medical Landmark Detection via Robust Boundary-aware Pre-training"
+                authors="Haifan Gong, Yu Lu, Xiang Wan, and Haofeng Li."
+                venue="AAAI Conference on Artificial Intelligence (<b>AAAI</b>), 2025"
+                badges={[{text: 'Oral', type: 'orange'}, {text: 'CCF A', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://ojs.aaai.org/index.php/AAAI/issue/view/626'}, {label: 'Code', url: 'https://github.com/lhaof/DGMLD'}]}
+              />
+
+              <PublicationItem 
+                title="nnMamba: 3D Biomedical Image Segmentation, Classification and Landmark Detection With State Space Model"
+                authors="Haifan Gong, Luoyao Kang, Yitao Wang, Yihan Wang, Xiang Wan, Xusheng Wu, and Haofeng Li."
+                venue="IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2025"
+                badges={[{text: 'Oral', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2402.03526'}, {label: 'Code', url: 'https://github.com/lhaof/nnMamba'}]}
+              />
+
+              <PublicationItem 
+                title="Intensity Confusion Matters: An Intensity-distance Guided Loss for Bronchus Segmentation"
+                authors="Haifan Gong*, Wenhao Huang*, Huan Zhang, Yu Wang, Xiang Wan, Hong Shen, Guanbin Li, and Haofeng Li."
+                venue="IEEE International Conference on Multimedia and Expo (<b>ICME</b>), 2024"
+                badges={[{text: 'Oral', type: 'orange'}, {text: 'CCF B', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2406.16150'}, {label: 'Data', url: 'https://osf.io/pskr9/'}, {label: 'Working with InferVision', url: 'https://www.infervision.com/'}]}
+              />
+
+              <PublicationItem 
+                title="ASC: Appearance and Structure Consistency for Unsupervised Domain Adaptation in Fetal Brain MRI Segmentation"
+                authors="Zihang Xu*, Haifan Gong*, Xiang Wan and Haofeng Li."
+                venue="Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023"
+				badges={[{text: 'CCF B', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://arxiv.org/abs/2310.14172'}, {label: 'Code', url: 'https://github.com/lhaof/ASC'}]}
+              />
+
+              <PublicationItem 
+                title="Visual-Attribute Prompt Learning for Progressive Mild Cognitive Impairment Prediction"
+                authors="Luoyao Kang*, Haifan Gong*, Xiang Wan and Haofeng Li."
+                venue="Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023"
+                badges={[{text: 'Early Accept', type: 'blue'}, {text: 'CCF B', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://arxiv.org/abs/2310.14158'}, {label: 'Code', url: 'https://github.com/lhaof/VAPL'}]}
+              />
+
+              <PublicationItem 
+                title="Less is More: Adaptive Curriculum Learning for Thyroid Nodule Diagnosis"
+                authors="Haifan Gong*, Hui Cheng*, Yifan Xie, Shuangyi Tan, Guanqi Chen, Fei Chen, Guanbin Li"
+                venue="Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2022"
+                badges={[{text: 'Student Travel Award', type: 'red'}, {text: 'Early Accept', type: 'blue'}, {text: 'CCF B', type: 'blue'}]}
+                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2207.00807.pdf'}, {label: 'Code', url: 'https://github.com/chenghui-666/ACL'}]}
+              />
+
+              <PublicationItem 
+                title="Cross-Modal Self-Attention with Multi-Task Pre-Training for Medical Visual Question Answering"
+                authors="Haifan Gong*, Guanqi Chen*, Yizhou Yu, Guanbin Li"
+                venue="ACM International Conference on Multimedia Retrieval (<b>ICMR</b>), 2021"
+                badges={[{text: 'Best Poster Paper', type: 'red'}]}
+                links={[{label: 'Full Text', url: 'https://www.researchgate.net/publication/351229736_Cross-Modal_Self-Attention_with_Multi-Task_Pre-Training_for_Medical_Visual_Question_Answering'}, {label: 'Code', url: 'https://github.com/haifangong/CMSA-MTPT-4-MedicalVQA'}, {label: '中译版', url: 'https://blog.csdn.net/weixin_42653320/article/details/118380578'}]}
+              />
+
+              <PublicationItem 
+                title="Multi-task Learning for Thyroid Nodule Segmentation with Thyroid Region Prior"
+                authors="Haifan Gong, Guanqi Chen, Ranran Wang, Xiang Xie, Mingzhi Mao, Yizhou Yu, Fei Chen, and Guanbin Li."
+                venue="IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2021"
+                links={[{label: 'Full Text', url: 'https://www.sysu-hcp.net/userfiles/files/2022/02/16/f026aebf6c5cda97.pdf'}, {label: 'Code', url: 'https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation'}]}
+              />
+            </div>
+
+            <div>
+              <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
+                <div className="h-px flex-1 bg-slate-100"></div> Invited & Surveys <div className="h-px flex-1 bg-slate-100"></div>
+              </h3>
+              
+              <PublicationItem 
+                title="Plug-and-play Computational Method for Advancing Natural and Biomedical Image Representation"
+                authors="Haifan Gong#, Tianyu Han, Guanbin Li."
+                venue="Patterns, 2025"
+                badges={[{text: 'Cell Press', type: 'orange'}, {text: 'IF 7.4', type: 'blue'}, {text: 'Q1', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://www.cell.com/action/showPdf?pii=S2666-3899%2825%2900260-0'}]}
+              />
+
+              <PublicationItem 
+                title="A Survey of Natural Language Generation"
+                authors="Chenhe Dong, Yinghui Li, Haifan Gong, Miaoxin Chen, Junxin Li, Ying Shen, Min Yang."
+                venue="ACM Computing Surveys (<b>ACM CSUR</b>), 2022"
+                badges={[{text: 'ESI Highly Cited', type: 'red'}, {text: 'Q1', type: 'blue'}, {text: 'IF 28.0', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
+                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2112.11739.pdf'}, {label: 'Official Full Text', url: 'https://dl.acm.org/doi/10.1145/3554727'}]}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <SectionTitle icon={Award}>Honors & Awards</SectionTitle>
+          <div className="space-y-1">
+            {[
+              { year: '2023', text: 'MICCAI Outstanding Reviewer Award Honerable Mentions (Top 2%)', link: 'https://conferences.miccai.org/2023/en/MICCAI-2023-OUTSTANDING-REVIEWERS-AWARDS.html' },
+              { year: '2022', text: 'MICCAI Student Travel Award (Top 4%)', link: 'https://conferences.miccai.org/2022/en/MICCAI-2022-STUDENT-TRAVEL-AWARDS.html' },
+              { year: '2021', text: 'ICMR Best Poster Paper Award (CCF B)', link: 'https://www.acm.org/conferences/best-paper-awards' },
+              { year: '2021', text: 'ImageCLEF Medical VQA Competation, First Prize', link: 'http://ceur-ws.org/Vol-2936/paper-99.pdf' },
+              { year: '2020', text: 'Distinguished graduates in NCU (10/10000)' }
+            ].map((award, i) => (
+              <div key={i} className="flex items-center gap-4 text-sm py-1 border-b border-slate-50 last:border-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                <span className="font-bold text-blue-600 w-12 flex-shrink-0">{award.year}</span>
+                <span className="text-slate-700">{award.text}</span>
+                {award.link && <a href={award.link} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-600 ml-1">[Link]</a>}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <SectionTitle icon={Briefcase}>Professional Activities</SectionTitle>
+          <div className="space-y-4 text-sm text-slate-700">
+            <div className="flex gap-4">
+              <span className="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Editorial</span>
+              <p><strong>Associate Editor</strong> for Discover Artificial Intelligence, Discover Imaging</p>
+            </div>
+            <div className="flex gap-4">
+              <span className="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Memberships</span>
+              <p>Member of IEEE, ACM, AAAI, and MICCAI.</p>
+            </div>
+            <div className="flex gap-4">
+              <span className="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Reviewer</span>
+              <div className="space-y-2">
+                <p>npj Digital Medicine, Patterns, Artificial Intelligence in Medicine, IEEE IoT Journal, The Visual Computer, IEEE Access, Scientific Reports.</p>
+                <p>Regular Reviewer for NeurIPS, ICML, ICLR, CVPR, ICCV, AAAI, MICCAI, AISTAT, etc. since 2024.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-slate-900 text-slate-400 py-12 mt-20">
+        <div className="max-w-4xl mx-auto px-6 flex flex-col items-center gap-8">
+          <div id="clustrmaps-container" className="w-40 h-40 bg-slate-800 rounded-lg overflow-hidden flex items-center justify-center"></div>
+          
+          <div className="text-center">
+            <span id="busuanzi_container_site_pv" className="text-xs font-medium bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
+              Total views: <span id="busuanzi_value_site_pv" className="text-blue-400 font-bold">...</span>
+            </span>
+            <p className="mt-6 text-[10px] uppercase tracking-widest opacity-50">
+              &copy; {new Date().getFullYear()} Haifan Gong | Last updated: Dec. 2025
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
