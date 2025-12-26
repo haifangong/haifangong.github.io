@@ -1,431 +1,690 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Mail, 
-  Github, 
-  Award, 
-  BookOpen, 
-  Newspaper, 
-  User,
-  ChevronDown,
-  ChevronUp,
-  MapPin,
-  Globe,
-  Briefcase
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haifan Gong - PhD, PostDoctoral Researcher</title>
+    
+    <!-- Tailwind CSS (via CDN for styling without complex build tools) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Configuration -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 
-const SectionTitle = ({ children, icon: Icon }) => (
-  <div className="flex items-center gap-3 mb-6 mt-12 border-b border-slate-200 pb-2">
-    <Icon className="w-5 h-5 text-blue-600" />
-    <h2 className="text-xl font-bold text-slate-800 tracking-tight">{children}</h2>
-  </div>
-);
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Utility for hiding elements */
+        .hidden { display: none; }
+    </style>
+    
+    <!-- Busuanzi Analytics -->
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</head>
+<body class="bg-white text-slate-900 selection:bg-blue-100 min-h-screen flex flex-col">
 
-const PublicationItem = ({ title, authors, venue, links, badges }) => {
-  const fullTextLink = links.find(l => l.label === 'Full Text' || l.label === 'Official Full Text')?.url;
-  
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="mb-6 group"
-    >
-      <div className="mb-1">
-        <a 
-          href={fullTextLink} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2"
-        >
-          {title}
-        </a>
-        {/* Badges placed AFTER the title, smaller size */}
-        <span className="inline-flex flex-wrap gap-1 align-middle">
-          {badges?.map((badge, i) => (
-            <span key={i} className={`inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight ${
-              badge.type === 'red' ? 'bg-red-100 text-red-700' : 
-              badge.type === 'orange' ? 'bg-orange-100 text-orange-700' : 
-              'bg-blue-100 text-blue-700'
-            }`}>
-              {badge.text}
-            </span>
-          ))}
-        </span>
-      </div>
-      
-      <p className="text-slate-600 text-sm mb-1" dangerouslySetInnerHTML={{ __html: authors.replace('Haifan Gong', '<strong>Haifan Gong</strong>') }} />
-      
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-        <span className="text-slate-500 italic" dangerouslySetInnerHTML={{ __html: venue }} />
-        <div className="flex gap-2">
-          {links.map((link, i) => (
-            <a 
-              key={i} 
-              href={link.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-blue-600 hover:underline font-medium text-[11px]"
-            >
-              [{link.label}]
-            </a>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-const App = () => {
-  const [isNewsExpanded, setIsNewsExpanded] = useState(false);
-
-  useEffect(() => {
-    const busuanziScript = document.createElement('script');
-    busuanziScript.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
-    busuanziScript.async = true;
-    document.body.appendChild(busuanziScript);
-
-    const clustrScript = document.createElement('script');
-    clustrScript.type = "text/javascript";
-    clustrScript.id = "clstr_globe";
-    clustrScript.src = "//cdn.clustrmaps.com/globe.js?d=RFw36KvhGjqV4Z6TT3tINTH5UGaAa3jQVK2psPZZa-8";
-    const container = document.getElementById('clustrmaps-container');
-    if (container) container.appendChild(clustrScript);
-
-    return () => {
-      if (document.body.contains(busuanziScript)) document.body.removeChild(busuanziScript);
-    };
-  }, []);
-
-  const allNews = [
-    { date: '12/2025', text: 'One paper was accepted to Biomaterials (Q1, IF 12.9), another paper was accepted to ESWA (Q1, IF 7.5)' },
-    { date: '09/2025', text: 'One paper was accepted to NeurIPS (CCF A), another paper was invited by Patterns (Cell Press)' },
-    { date: '04/2025', text: 'One paper was accepted to IEEE JBHI (Q1, Famous journal in medical imaging analysis)' },
-    { date: '02/2025', text: 'One paper was accepted to IEEE TMI (Q1, Top journal in medical imaging analysis)' },
-    { date: '01/2025', text: 'One paper was accepted to AAAI (CCF A) with Oral presentation (Top 4%), another paper was accepted to ISBI also with Oral presentation (Top 15%)' },
-    { date: '08/2024', text: 'One paper was accepted to IEEE TMI (Q1, Top journal in medical imaging analysis)' },
-    { date: '03/2024', text: 'One paper was accepted to ICME with Oral presentation (Top 15%)' },
-    { date: '09/2023', text: 'One paper was accepted to Bioinformatics (Q1, Famous journal in bioinformatics)' },
-    { date: '06/2023', text: 'Two papers were accepted to MICCAI 2023 with one early accepted (Top 14%)' },
-    { date: '06/2023', text: 'One paper was accepted to Nature Communications' },
-  ];
-
-  const displayedNews = isNewsExpanded ? allNews : allNews.slice(0, 5);
-
-  return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100">
-      <header className="bg-slate-50 border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Haifan Gong</h1>
-            <p className="text-xl text-blue-600 font-semibold mb-6">PhD, PostDoctoral Researcher</p>
+    <!-- HEADER -->
+    <header class="bg-slate-50 border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-6 py-12">
+            <h1 class="text-4xl font-extrabold text-slate-900 mb-2">Haifan Gong</h1>
+            <p class="text-xl text-blue-600 font-semibold mb-6">PhD, PostDoctoral Researcher</p>
             
-            <div className="flex items-center gap-3 text-slate-600 mb-6">
-              <MapPin className="w-4 h-4 text-slate-400" />
-              <span className="text-sm">CBICA, AIBIL, Perelman School of Medicine, University of Pennsylvania, PA, USA</span>
+            <div class="flex items-center gap-3 text-slate-600 mb-6">
+                <!-- Map Pin Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span class="text-sm">CBICA, AIBIL, Perelman School of Medicine, University of Pennsylvania, PA, USA</span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-medium">
-              <a href="https://scholar.google.com/citations?user=PA98BRcAAAAJ&hl=en" className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
-                <Globe className="w-4 h-4" /> Google Scholar
-              </a>
-              <a href="https://github.com/haifangong" className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
-                <Github className="w-4 h-4" /> GitHub
-              </a>
-              <a href="mailto:haifangong@outlook.com" className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
-                <Mail className="w-4 h-4" /> haifangong@outlook.com
-              </a>
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium">
+                <a href="https://scholar.google.com/citations?user=PA98BRcAAAAJ&hl=en" class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Google Scholar
+                </a>
+                <a href="https://github.com/haifangong" class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/haifan-gong-b62234341/" class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                    LinkedIn
+                </a>
+                <a href="mailto:haifangong@outlook.com" class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    haifangong@outlook.com
+                </a>
             </div>
-          </motion.div>
         </div>
-      </header>
+    </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-8">
+    <main class="max-w-4xl mx-auto px-6 py-8 flex-grow">
+        
+        <!-- BIOGRAPHY -->
         <section>
-          <SectionTitle icon={User}>Biography</SectionTitle>
-          <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed">
-            <p className="mb-4"> 
-              I am currently a PostDoctoral Researcher at <strong>UPenn</strong>, working with 
-              <a href="https://www.tianyuhan.ai/" className="text-blue-600 hover:underline mx-1">Tianyu Han</a> at <a href="https://aibil.med.upenn.edu/people/" className="text-blue-600 hover:underline mx-1">AIBIL</a>
-              I received my PhD degree in Computer Information Engineering at 
-              <a href="https://www.cuhk.edu.cn/" className="text-blue-600 hover:underline mx-1">The Chinese University of Hong Kong, Shenzhen</a> in 2025.7, supervised by <a href="http://haofengli.net/" target="_blank">Haofeng Li</a>, <a href="https://www.sribd.cn/" target="_blank">Wan Xiang</a>, and <a href="https://mypage.cuhk.edu.cn/academics/wangdong/index.html" target="_blank">Dong Wang</a>.
-              Previously, I received my Master's degree from <strong>Sun Yat-sen University (SYSU)</strong> in 2022.7, supervised by <a href="http://guanbinli.com/" target="_blank">Guanbin Li</a>.
-            </p>
-            <p className="text-slate-800 font-medium bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-              <span className="text-blue-700 font-bold uppercase text-xs block mb-1">Research Interests</span>
-              LLM for health, domain generalization, multi-modal learning, medical imaging analysis, and bioinformatics.
-            </p>
-          </div>
+            <div class="flex items-center gap-3 mb-6 mt-12 border-b border-slate-200 pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <h2 class="text-xl font-bold text-slate-800 tracking-tight">Biography</h2>
+            </div>
+            <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed">
+                <p class="mb-4"> 
+                    I am currently a PostDoctoral Researcher at <strong>UPenn</strong>, working with 
+                    <a href="https://www.tianyuhan.ai/" class="text-blue-600 hover:underline mx-1">Tianyu Han</a> at <a href="https://aibil.med.upenn.edu/people/" class="text-blue-600 hover:underline mx-1">AIBIL</a>.
+                    I received my PhD degree in Computer Information Engineering at 
+                    <a href="https://www.cuhk.edu.cn/" class="text-blue-600 hover:underline mx-1">The Chinese University of Hong Kong, Shenzhen</a> in July 2025, supervised by <a href="http://haofengli.net/" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline">Haofeng Li</a>, <a href="https://www.sribd.cn/" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline">Wan Xiang</a>, and <a href="https://mypage.cuhk.edu.cn/academics/wangdong/index.html" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline">Dong Wang</a>.
+                    Previously, I received my Master's degree from <strong>Sun Yat-sen University (SYSU)</strong> in July 2022, supervised by <a href="http://guanbinli.com/" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline">Guanbin Li</a>.
+                </p>
+                <p class="text-slate-800 font-medium bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <span class="text-blue-700 font-bold uppercase text-xs block mb-1">Research Interests</span>
+                    LLM for health, domain generalization, multi-modal learning, medical imaging analysis, and bioinformatics.
+                </p>
+            </div>
         </section>
 
+        <!-- NEWS -->
         <section>
-          <SectionTitle icon={Newspaper}>News</SectionTitle>
-          <div className="space-y-3">
-            <AnimatePresence initial={false}>
-              {displayedNews.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-3 text-sm">
-                  <span className="font-bold text-blue-500 whitespace-nowrap">[{item.date}]</span>
-                  <p className="text-slate-700">{item.text}</p>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-            <button 
-              onClick={() => setIsNewsExpanded(!isNewsExpanded)}
-              className="mt-2 flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-blue-600 uppercase tracking-widest"
-            >
-              {isNewsExpanded ? <><ChevronUp className="w-3 h-3" /> Less</> : <><ChevronDown className="w-3 h-3" /> More News</>}
-            </button>
-          </div>
+            <div class="flex items-center gap-3 mb-6 mt-12 border-b border-slate-200 pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+                <h2 class="text-xl font-bold text-slate-800 tracking-tight">News</h2>
+            </div>
+            
+            <div class="space-y-3" id="news-container">
+                <!-- Visible News -->
+                <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[12/2025]</span><p class="text-slate-700">One paper was accepted to Biomaterials (Q1, IF 12.9), another paper was accepted to ESWA (Q1, IF 7.5)</p></div>
+                <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[09/2025]</span><p class="text-slate-700">One paper was accepted to NeurIPS (CCF A), another paper was invited by Patterns (Cell Press)</p></div>
+                <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[04/2025]</span><p class="text-slate-700">One paper was accepted to IEEE JBHI (Q1, Famous journal in medical imaging analysis)</p></div>
+                <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[02/2025]</span><p class="text-slate-700">One paper was accepted to IEEE TMI (Q1, Top journal in medical imaging analysis)</p></div>
+                <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[01/2025]</span><p class="text-slate-700">One paper was accepted to AAAI (CCF A) with Oral presentation (Top 4%), another paper was accepted to ISBI also with Oral presentation (Top 15%)</p></div>
+
+                <!-- Hidden News -->
+                <div id="more-news" class="hidden space-y-3">
+                    <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[08/2024]</span><p class="text-slate-700">One paper was accepted to IEEE TMI (Q1, Top journal in medical imaging analysis)</p></div>
+                    <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[03/2024]</span><p class="text-slate-700">One paper was accepted to ICME with Oral presentation (Top 15%)</p></div>
+                    <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[09/2023]</span><p class="text-slate-700">One paper was accepted to Bioinformatics (Q1, Famous journal in bioinformatics)</p></div>
+                    <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[06/2023]</span><p class="text-slate-700">Two papers were accepted to MICCAI 2023 with one early accepted (Top 14%)</p></div>
+                    <div class="flex gap-3 text-sm"><span class="font-bold text-blue-500 whitespace-nowrap">[06/2023]</span><p class="text-slate-700">One paper was accepted to Nature Communications</p></div>
+                </div>
+
+                <button id="toggle-news-btn" class="mt-2 flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-blue-600 uppercase tracking-widest">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    More News
+                </button>
+            </div>
         </section>
 
+        <!-- PUBLICATIONS -->
         <section>
-          <SectionTitle icon={BookOpen}>Publications</SectionTitle>
-          
-          <div className="space-y-12">
-            <div>
-              <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
-                <div className="h-px flex-1 bg-slate-100"></div> Journals <div className="h-px flex-1 bg-slate-100"></div>
-              </h3>
-              
-              <PublicationItem 
-                title="AI Agent-based Discovery of D-enantiomeric Antimicrobial Peptides against Multidrug-Resistant Bacterial Infection"
-                authors="Qinzhou Kong*, Yinuo Zhao*, Haifan Gong*, Luoyao Kang*, ..., and Yanqing Li."
-                venue="Biomaterials, 2025"
-                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 12.9', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S0142961225008476'}, {label: 'Code', url: 'https://github.com/kangluoyao/PeptiD-Agent'}]}
-              />
-
-              <PublicationItem 
-                title="Costal Cartilage Segmentation with Topology Guided Deformable Mamba: Method and Benchmark"
-                authors="Senmao Wang*, Haifan Gong*, Runmeng Cui, Boyao Wan, ..., Haiyue Jiang, and Lin Lin."
-                venue="Expert Systems With Applications, 2025"
-                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 7.5', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S0957417425037017'}, {label: 'Code', url: 'https://github.com/EricwanAR/DeformableMambaSeg'}]}
-              />
-
-              <PublicationItem 
-                title="Boundary as the Bridge: Towards Heterogeneous Partially-labeled Medical Image Segmentation and Landmark Detection"
-                authors="Haifan Gong, Boyao Wan, Luoyao Kang, Xiang Wan, Lingyan Zhang, and Haofeng Li."
-                venue="IEEE Transactions on Medical Imaging, 2025"
-                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 11.3', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/document/10915612/'}, {label: 'Code', url: 'https://github.com/lhaof/HPL'}]}
-              />
-
-              <PublicationItem 
-                title="Fetal Cerebellum Landmark Detection Based on 3D MRI: Method and Benchmark"
-                authors="Haifan Gong*, Huixian Liu*, Yitao Wang, Xiaoling Liu, Xiang Wan, Qiao Shi, and Haofeng Li."
-                venue="IEEE Journal of Biomedical and Health Informatics, 2025"
-                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 6.8', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/document/10960623'}, {label: 'Code', url: 'https://github.com/lhaof/LFC'}]}
-              />
-
-              <PublicationItem 
-                title="BCNet: Bronchus Classification via Structure Guided Representation Learning"
-                authors="Wenhao Huang*, Haifan Gong*, Huan Zhang, Yu Wang, Xiang Wan, Guanbin Li, Haofeng Li, and Hong Shen."
-                venue="IEEE Transactions on Medical Imaging, 2024"
-                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 11.3', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/abstract/document/10644043/'}, {label: 'Data', url: 'https://osf.io/pskr9/'}]}
-              />
-
-              <PublicationItem 
-                title="Unbiased Curriculum Learning Enhanced Global-Local Graph Neural Network for Protein Thermodynamic Stability Prediction"
-                authors="Haifan Gong*, Yumeng Zhang*, Chenhe Dong, Yue Wang, ..., Lanxuan Liu, Jie Xu, Guanbin Li."
-                venue="Bioinformatics, 2023"
-                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 5.4', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://academic.oup.com/bioinformatics/article/39/10/btad589/7280695'}, {label: 'Code', url: 'https://github.com/haifangong/UCL-GLGNN'}]}
-              />
-
-              <PublicationItem 
-                title="Bile Acid-dependent Transcription Factors and Chromatin Accessibility Determine Regional Heterogeneity of Intestinal Antimicrobial Peptides"
-                authors="Yue Wang, Yanbo Yu, Lixiang Li, Mengqi Zheng, Jiawei Zhou, Haifan Gong, et al."
-                venue="Nature Communications, 2023"
-                badges={[{text: 'Nature Press', type: 'orange'}, {text: 'Top Journal', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://www.nature.com/articles/s41467-023-40565-7'}]}
-              />
-
-              <PublicationItem 
-                title="VQAMix: Conditional Triplet Mixup for Medical Visual Question Answering"
-                authors="Haifan Gong*, Guanqi Chen*, Mingzhi Mao, Zhen Li, and Guanbin Li."
-                venue="IEEE Transactions on Medical Imaging, 2022"
-                badges={[{text: 'Q1', type: 'blue'}, {text: 'IF 11.3', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://ieeexplore.ieee.org/abstract/document/9802503/'}, {label: 'Code', url: 'https://github.com/haifangong/VQAMix'}]}
-              />
-
-              <PublicationItem 
-                title="Thyroid Region Prior Guided Attention for Ultrasound Segmentation of Thyroid Nodules"
-                authors="Haifan Gong, Jiaxin Chen, Guanqi Chen, Haofeng Li, Guanbin Li and Fei Chen."
-                venue="Computers in Biology and Medicine, 2022"
-                badges={[{text: 'ESI Highly Cited', type: 'red'}, {text: 'Q1', type: 'blue'}, {text: 'IF 7.0', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S0010482522010976'}, {label: 'Code', url: 'https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation'}]}
-              />
-
-              <PublicationItem 
-                title="Understanding the Effectiveness of Enzyme Pre-reaction State by a Quantum-based Machine Learning Model"
-                authors="Shenggan Luo, Lanxuan Liu, Chu-Jun Lyu, Byuri Sim, Yihan Liu, Haifan Gong, Yao Nie, Yilei Zhao."
-                venue="Cell Reports Physical Science, 2022"
-                badges={[{text: 'Cell Press', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://www.sciencedirect.com/science/article/pii/S2666386422004301'}]}
-              />
+            <div class="flex items-center gap-3 mb-6 mt-12 border-b border-slate-200 pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                <h2 class="text-xl font-bold text-slate-800 tracking-tight">Publications</h2>
             </div>
 
-            <div>
-              <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
-                <div className="h-px flex-1 bg-slate-100"></div> Conferences <div className="h-px flex-1 bg-slate-100"></div>
-              </h3>
-              
-              <PublicationItem 
-                title="Intermediate Domain Alignment and Morphology Analogy for Patent-Product Image Retrieval"
-                authors="Haifan Gong*, Xuanye Zhang*, Ruifei Zhang, Yun Su, Zhuo Li, Yuhao Du, Anningzhe Gao, Xiang Wan, Haofeng Li"
-                venue="Neural Information Processing Systems (<b>NeurIPS</b>), 2025"
-                badges={[{text: 'CCF A', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://openreview.net/pdf?id=vE98S8BmzP'}, {label: 'Code', url: 'https://loslorien.github.io/idama-project/'}]}
-              />
+            <div class="space-y-12">
+                <!-- Journals -->
+                <div>
+                    <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
+                        <div class="h-px flex-1 bg-slate-100"></div> Journals <div class="h-px flex-1 bg-slate-100"></div>
+                    </h3>
+                    
+                    <!-- Item 1 -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.sciencedirect.com/science/article/pii/S0142961225008476" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                AI Agent-based Discovery of D-enantiomeric Antimicrobial Peptides against Multidrug-Resistant Bacterial Infection
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 12.9</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Qinzhou Kong*, Yinuo Zhao*, <strong>Haifan Gong</strong>*, Luoyao Kang*, ..., and Yanqing Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Biomaterials, 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.sciencedirect.com/science/article/pii/S0142961225008476" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/kangluoyao/PeptiD-Agent" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="Domain Generalized Medical Landmark Detection via Robust Boundary-aware Pre-training"
-                authors="Haifan Gong, Yu Lu, Xiang Wan, and Haofeng Li."
-                venue="AAAI Conference on Artificial Intelligence (<b>AAAI</b>), 2025"
-                badges={[{text: 'Oral', type: 'orange'}, {text: 'CCF A', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://ojs.aaai.org/index.php/AAAI/issue/view/626'}, {label: 'Code', url: 'https://github.com/lhaof/DGMLD'}]}
-              />
+                    <!-- Item 2 -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.sciencedirect.com/science/article/pii/S0957417425037017" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Costal Cartilage Segmentation with Topology Guided Deformable Mamba: Method and Benchmark
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 7.5</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Senmao Wang*, <strong>Haifan Gong</strong>*, Runmeng Cui, Boyao Wan, ..., Haiyue Jiang, and Lin Lin.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Expert Systems With Applications, 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.sciencedirect.com/science/article/pii/S0957417425037017" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/EricwanAR/DeformableMambaSeg" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="nnMamba: 3D Biomedical Image Segmentation, Classification and Landmark Detection With State Space Model"
-                authors="Haifan Gong, Luoyao Kang, Yitao Wang, Yihan Wang, Xiang Wan, Xusheng Wu, and Haofeng Li."
-                venue="IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2025"
-                badges={[{text: 'Oral', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2402.03526'}, {label: 'Code', url: 'https://github.com/lhaof/nnMamba'}]}
-              />
+                    <!-- Item 3 (IEEE TMI - Keep Top Journal) -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://ieeexplore.ieee.org/document/10915612/" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Boundary as the Bridge: Towards Heterogeneous Partially-labeled Medical Image Segmentation and Landmark Detection
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 11.3</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Top Journal</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>, Boyao Wan, Luoyao Kang, Xiang Wan, Lingyan Zhang, and Haofeng Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">IEEE Transactions on Medical Imaging, 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://ieeexplore.ieee.org/document/10915612/" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/lhaof/HPL" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="Intensity Confusion Matters: An Intensity-distance Guided Loss for Bronchus Segmentation"
-                authors="Haifan Gong*, Wenhao Huang*, Huan Zhang, Yu Wang, Xiang Wan, Hong Shen, Guanbin Li, and Haofeng Li."
-                venue="IEEE International Conference on Multimedia and Expo (<b>ICME</b>), 2024"
-                badges={[{text: 'Oral', type: 'orange'}, {text: 'CCF B', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2406.16150'}, {label: 'Data', url: 'https://osf.io/pskr9/'}, {label: 'Working with InferVision', url: 'https://www.infervision.com/'}]}
-              />
+                    <!-- Item 4 -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://ieeexplore.ieee.org/document/10960623" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Fetal Cerebellum Landmark Detection Based on 3D MRI: Method and Benchmark
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 6.8</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>*, Huixian Liu*, Yitao Wang, Xiaoling Liu, Xiang Wan, Qiao Shi, and Haofeng Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">IEEE Journal of Biomedical and Health Informatics, 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://ieeexplore.ieee.org/document/10960623" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/lhaof/LFC" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="ASC: Appearance and Structure Consistency for Unsupervised Domain Adaptation in Fetal Brain MRI Segmentation"
-                authors="Zihang Xu*, Haifan Gong*, Xiang Wan and Haofeng Li."
-                venue="Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023"
-				badges={[{text: 'CCF B', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://arxiv.org/abs/2310.14172'}, {label: 'Code', url: 'https://github.com/lhaof/ASC'}]}
-              />
+                    <!-- Item 5 (IEEE TMI - Keep Top Journal) -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://ieeexplore.ieee.org/abstract/document/10644043/" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                BCNet: Bronchus Classification via Structure Guided Representation Learning
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 11.3</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Top Journal</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Wenhao Huang*, <strong>Haifan Gong</strong>*, Huan Zhang, Yu Wang, Xiang Wan, Guanbin Li, Haofeng Li, and Hong Shen.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">IEEE Transactions on Medical Imaging, 2024</span>
+                            <div class="flex gap-2">
+                                <a href="https://ieeexplore.ieee.org/abstract/document/10644043/" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://osf.io/pskr9/" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Data]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="Visual-Attribute Prompt Learning for Progressive Mild Cognitive Impairment Prediction"
-                authors="Luoyao Kang*, Haifan Gong*, Xiang Wan and Haofeng Li."
-                venue="Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023"
-                badges={[{text: 'Early Accept', type: 'blue'}, {text: 'CCF B', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://arxiv.org/abs/2310.14158'}, {label: 'Code', url: 'https://github.com/lhaof/VAPL'}]}
-              />
+                    <!-- Item 6 -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://academic.oup.com/bioinformatics/article/39/10/btad589/7280695" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Unbiased Curriculum Learning Enhanced Global-Local Graph Neural Network for Protein Thermodynamic Stability Prediction
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 5.4</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>*, Yumeng Zhang*, Chenhe Dong, Yue Wang, ..., Lanxuan Liu, Jie Xu, Guanbin Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Bioinformatics, 2023</span>
+                            <div class="flex gap-2">
+                                <a href="https://academic.oup.com/bioinformatics/article/39/10/btad589/7280695" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/haifangong/UCL-GLGNN" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="Less is More: Adaptive Curriculum Learning for Thyroid Nodule Diagnosis"
-                authors="Haifan Gong*, Hui Cheng*, Yifan Xie, Shuangyi Tan, Guanqi Chen, Fei Chen, Guanbin Li"
-                venue="Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2022"
-                badges={[{text: 'Student Travel Award', type: 'red'}, {text: 'Early Accept', type: 'blue'}, {text: 'CCF B', type: 'blue'}]}
-                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2207.00807.pdf'}, {label: 'Code', url: 'https://github.com/chenghui-666/ACL'}]}
-              />
+                    <!-- Item 7 (Nature Comms - Keep Top Journal) -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.nature.com/articles/s41467-023-40565-7" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Bile Acid-dependent Transcription Factors and Chromatin Accessibility Determine Regional Heterogeneity of Intestinal Antimicrobial Peptides
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Nature Press</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Top Journal</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Yue Wang, Yanbo Yu, Lixiang Li, Mengqi Zheng, Jiawei Zhou, <strong>Haifan Gong</strong>, et al.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Nature Communications, 2023</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.nature.com/articles/s41467-023-40565-7" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="Cross-Modal Self-Attention with Multi-Task Pre-Training for Medical Visual Question Answering"
-                authors="Haifan Gong*, Guanqi Chen*, Yizhou Yu, Guanbin Li"
-                venue="ACM International Conference on Multimedia Retrieval (<b>ICMR</b>), 2021"
-                badges={[{text: 'Best Poster Paper', type: 'red'}]}
-                links={[{label: 'Full Text', url: 'https://www.researchgate.net/publication/351229736_Cross-Modal_Self-Attention_with_Multi-Task_Pre-Training_for_Medical_Visual_Question_Answering'}, {label: 'Code', url: 'https://github.com/haifangong/CMSA-MTPT-4-MedicalVQA'}, {label: '中译版', url: 'https://blog.csdn.net/weixin_42653320/article/details/118380578'}]}
-              />
+                    <!-- Item 8 (IEEE TMI - Keep Top Journal) -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://ieeexplore.ieee.org/abstract/document/9802503/" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                VQAMix: Conditional Triplet Mixup for Medical Visual Question Answering
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 11.3</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Top Journal</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>*, Guanqi Chen*, Mingzhi Mao, Zhen Li, and Guanbin Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">IEEE Transactions on Medical Imaging, 2022</span>
+                            <div class="flex gap-2">
+                                <a href="https://ieeexplore.ieee.org/abstract/document/9802503/" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/haifangong/VQAMix" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
 
-              <PublicationItem 
-                title="Multi-task Learning for Thyroid Nodule Segmentation with Thyroid Region Prior"
-                authors="Haifan Gong, Guanqi Chen, Ranran Wang, Xiang Xie, Mingzhi Mao, Yizhou Yu, Fei Chen, and Guanbin Li."
-                venue="IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2021"
-                links={[{label: 'Full Text', url: 'https://www.sysu-hcp.net/userfiles/files/2022/02/16/f026aebf6c5cda97.pdf'}, {label: 'Code', url: 'https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation'}]}
-              />
+                    <!-- Item 9 -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.sciencedirect.com/science/article/pii/S0010482522010976" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Thyroid Region Prior Guided Attention for Ultrasound Segmentation of Thyroid Nodules
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-red-100 text-red-700">ESI Highly Cited</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 7.0</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>, Jiaxin Chen, Guanqi Chen, Haofeng Li, Guanbin Li and Fei Chen.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Computers in Biology and Medicine, 2022</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.sciencedirect.com/science/article/pii/S0010482522010976" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 10 -->
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.sciencedirect.com/science/article/pii/S2666386422004301" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Understanding the Effectiveness of Enzyme Pre-reaction State by a Quantum-based Machine Learning Model
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Cell Press</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Shenggan Luo, Lanxuan Liu, Chu-Jun Lyu, Byuri Sim, Yihan Liu, <strong>Haifan Gong</strong>, Yao Nie, Yilei Zhao.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Cell Reports Physical Science, 2022</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.sciencedirect.com/science/article/pii/S2666386422004301" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conferences -->
+                <div>
+                    <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
+                        <div class="h-px flex-1 bg-slate-100"></div> Conferences <div class="h-px flex-1 bg-slate-100"></div>
+                    </h3>
+                    
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://openreview.net/pdf?id=vE98S8BmzP" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Intermediate Domain Alignment and Morphology Analogy for Patent-Product Image Retrieval
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">CCF A</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>*, Xuanye Zhang*, Ruifei Zhang, Yun Su, Zhuo Li, Yuhao Du, Anningzhe Gao, Xiang Wan, Haofeng Li</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Neural Information Processing Systems (<b>NeurIPS</b>), 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://openreview.net/pdf?id=vE98S8BmzP" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://loslorien.github.io/idama-project/" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://ojs.aaai.org/index.php/AAAI/issue/view/626" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Domain Generalized Medical Landmark Detection via Robust Boundary-aware Pre-training
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Oral</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">CCF A</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>, Yu Lu, Xiang Wan, and Haofeng Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">AAAI Conference on Artificial Intelligence (<b>AAAI</b>), 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://ojs.aaai.org/index.php/AAAI/issue/view/626" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/lhaof/DGMLD" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://arxiv.org/pdf/2402.03526" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                nnMamba: 3D Biomedical Image Segmentation, Classification and Landmark Detection With State Space Model
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Oral</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>, Luoyao Kang, Yitao Wang, Yihan Wang, Xiang Wan, Xusheng Wu, and Haofeng Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://arxiv.org/pdf/2402.03526" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/lhaof/nnMamba" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://arxiv.org/pdf/2406.16150" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Intensity Confusion Matters: An Intensity-distance Guided Loss for Bronchus Segmentation
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Oral</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">CCF B</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>*, Wenhao Huang*, Huan Zhang, Yu Wang, Xiang Wan, Hong Shen, Guanbin Li, and Haofeng Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">IEEE International Conference on Multimedia and Expo (<b>ICME</b>), 2024</span>
+                            <div class="flex gap-2">
+                                <a href="https://arxiv.org/pdf/2406.16150" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://osf.io/pskr9/" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Data]</a>
+                                <a href="https://www.infervision.com/" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Working with InferVision]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://arxiv.org/abs/2310.14172" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                ASC: Appearance and Structure Consistency for Unsupervised Domain Adaptation in Fetal Brain MRI Segmentation
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">CCF B</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Zihang Xu*, <strong>Haifan Gong</strong>*, Xiang Wan and Haofeng Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023</span>
+                            <div class="flex gap-2">
+                                <a href="https://arxiv.org/abs/2310.14172" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/lhaof/ASC" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://arxiv.org/abs/2310.14158" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Visual-Attribute Prompt Learning for Progressive Mild Cognitive Impairment Prediction
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Early Accept</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">CCF B</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Luoyao Kang*, <strong>Haifan Gong</strong>*, Xiang Wan and Haofeng Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2023</span>
+                            <div class="flex gap-2">
+                                <a href="https://arxiv.org/abs/2310.14158" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/lhaof/VAPL" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://arxiv.org/pdf/2207.00807.pdf" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Less is More: Adaptive Curriculum Learning for Thyroid Nodule Diagnosis
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-red-100 text-red-700">Student Travel Award</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Early Accept</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">CCF B</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>*, Hui Cheng*, Yifan Xie, Shuangyi Tan, Guanqi Chen, Fei Chen, Guanbin Li</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Medical Image Computing and Computer Assisted Intervention (<b>MICCAI</b>), 2022</span>
+                            <div class="flex gap-2">
+                                <a href="https://arxiv.org/pdf/2207.00807.pdf" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/chenghui-666/ACL" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.researchgate.net/publication/351229736_Cross-Modal_Self-Attention_with_Multi-Task_Pre-Training_for_Medical_Visual_Question_Answering" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Cross-Modal Self-Attention with Multi-Task Pre-Training for Medical Visual Question Answering
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-red-100 text-red-700">Best Poster Paper</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>*, Guanqi Chen*, Yizhou Yu, Guanbin Li</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">ACM International Conference on Multimedia Retrieval (<b>ICMR</b>), 2021</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.researchgate.net/publication/351229736_Cross-Modal_Self-Attention_with_Multi-Task_Pre-Training_for_Medical_Visual_Question_Answering" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/haifangong/CMSA-MTPT-4-MedicalVQA" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                                <a href="https://blog.csdn.net/weixin_42653320/article/details/118380578" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[中译版]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.sysu-hcp.net/userfiles/files/2022/02/16/f026aebf6c5cda97.pdf" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Multi-task Learning for Thyroid Nodule Segmentation with Thyroid Region Prior
+                            </a>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>, Guanqi Chen, Ranran Wang, Xiang Xie, Mingzhi Mao, Yizhou Yu, Fei Chen, and Guanbin Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">IEEE International Symposium on Biomedical Imaging (<b>ISBI</b>), 2021</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.sysu-hcp.net/userfiles/files/2022/02/16/f026aebf6c5cda97.pdf" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://github.com/haifangong/TRFE-Net-for-thyroid-nodule-segmentation" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Code]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invited & Surveys -->
+                <div>
+                    <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
+                        <div class="h-px flex-1 bg-slate-100"></div> Invited & Surveys <div class="h-px flex-1 bg-slate-100"></div>
+                    </h3>
+                    
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://www.cell.com/action/showPdf?pii=S2666-3899%2825%2900260-0" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                Plug-and-play Computational Method for Advancing Natural and Biomedical Image Representation
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-orange-100 text-orange-700">Cell Press</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 7.4</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1"><strong>Haifan Gong</strong>#, Tianyu Han, Guanbin Li.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">Patterns, 2025</span>
+                            <div class="flex gap-2">
+                                <a href="https://www.cell.com/action/showPdf?pii=S2666-3899%2825%2900260-0" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 group">
+                        <div class="mb-1">
+                            <a href="https://arxiv.org/pdf/2112.11739.pdf" target="_blank" class="text-[17px] font-bold text-slate-900 leading-snug hover:text-blue-600 transition-colors mr-2">
+                                A Survey of Natural Language Generation
+                            </a>
+                            <span class="inline-flex flex-wrap gap-1 align-middle">
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-red-100 text-red-700">ESI Highly Cited</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">Q1</span>
+                                <span class="inline-flex items-center px-1 py-0 rounded-[3px] text-[9px] font-bold uppercase tracking-tight bg-blue-100 text-blue-700">IF 28.0</span>
+                            </span>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-1">Chenhe Dong, Yinghui Li, <strong>Haifan Gong</strong>, Miaoxin Chen, Junxin Li, Ying Shen, Min Yang.</p>
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                            <span class="text-slate-500 italic">ACM Computing Surveys (<b>ACM CSUR</b>), 2022</span>
+                            <div class="flex gap-2">
+                                <a href="https://arxiv.org/pdf/2112.11739.pdf" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Full Text]</a>
+                                <a href="https://dl.acm.org/doi/10.1145/3554727" target="_blank" class="text-blue-600 hover:underline font-medium text-[11px]">[Official Full Text]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div>
-              <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center gap-2">
-                <div className="h-px flex-1 bg-slate-100"></div> Invited & Surveys <div className="h-px flex-1 bg-slate-100"></div>
-              </h3>
-              
-              <PublicationItem 
-                title="Plug-and-play Computational Method for Advancing Natural and Biomedical Image Representation"
-                authors="Haifan Gong#, Tianyu Han, Guanbin Li."
-                venue="Patterns, 2025"
-                badges={[{text: 'Cell Press', type: 'orange'}, {text: 'IF 7.4', type: 'blue'}, {text: 'Q1', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://www.cell.com/action/showPdf?pii=S2666-3899%2825%2900260-0'}]}
-              />
-
-              <PublicationItem 
-                title="A Survey of Natural Language Generation"
-                authors="Chenhe Dong, Yinghui Li, Haifan Gong, Miaoxin Chen, Junxin Li, Ying Shen, Min Yang."
-                venue="ACM Computing Surveys (<b>ACM CSUR</b>), 2022"
-                badges={[{text: 'ESI Highly Cited', type: 'red'}, {text: 'Q1', type: 'blue'}, {text: 'IF 28.0', type: 'blue'}, {text: 'Top Journal', type: 'orange'}]}
-                links={[{label: 'Full Text', url: 'https://arxiv.org/pdf/2112.11739.pdf'}, {label: 'Official Full Text', url: 'https://dl.acm.org/doi/10.1145/3554727'}]}
-              />
-            </div>
-          </div>
         </section>
 
+        <!-- HONORS -->
         <section>
-          <SectionTitle icon={Award}>Honors & Awards</SectionTitle>
-          <div className="space-y-1">
-            {[
-              { year: '2023', text: 'MICCAI Outstanding Reviewer Award Honerable Mentions (Top 2%)', link: 'https://conferences.miccai.org/2023/en/MICCAI-2023-OUTSTANDING-REVIEWERS-AWARDS.html' },
-              { year: '2022', text: 'MICCAI Student Travel Award (Top 4%)', link: 'https://conferences.miccai.org/2022/en/MICCAI-2022-STUDENT-TRAVEL-AWARDS.html' },
-              { year: '2021', text: 'ICMR Best Poster Paper Award (CCF B)', link: 'https://www.acm.org/conferences/best-paper-awards' },
-              { year: '2021', text: 'ImageCLEF Medical VQA Competation, First Prize', link: 'http://ceur-ws.org/Vol-2936/paper-99.pdf' },
-              { year: '2020', text: 'Distinguished graduates in NCU (10/10000)' }
-            ].map((award, i) => (
-              <div key={i} className="flex items-center gap-4 text-sm py-1 border-b border-slate-50 last:border-0 whitespace-nowrap overflow-hidden text-ellipsis">
-                <span className="font-bold text-blue-600 w-12 flex-shrink-0">{award.year}</span>
-                <span className="text-slate-700">{award.text}</span>
-                {award.link && <a href={award.link} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-600 ml-1">[Link]</a>}
-              </div>
-            ))}
-          </div>
+            <div class="flex items-center gap-3 mb-6 mt-12 border-b border-slate-200 pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                <h2 class="text-xl font-bold text-slate-800 tracking-tight">Honors & Awards</h2>
+            </div>
+            <div class="space-y-1">
+                <div class="flex items-center gap-4 text-sm py-1 border-b border-slate-50 last:border-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span class="font-bold text-blue-600 w-12 flex-shrink-0">2023</span>
+                    <span class="text-slate-700">MICCAI Outstanding Reviewer Award Honorable Mentions (Top 2%)</span>
+                    <a href="https://conferences.miccai.org/2023/en/MICCAI-2023-OUTSTANDING-REVIEWERS-AWARDS.html" target="_blank" class="text-blue-400 hover:text-blue-600 ml-1">[Link]</a>
+                </div>
+                <div class="flex items-center gap-4 text-sm py-1 border-b border-slate-50 last:border-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span class="font-bold text-blue-600 w-12 flex-shrink-0">2022</span>
+                    <span class="text-slate-700">MICCAI Student Travel Award (Top 4%)</span>
+                    <a href="https://conferences.miccai.org/2022/en/MICCAI-2022-STUDENT-TRAVEL-AWARDS.html" target="_blank" class="text-blue-400 hover:text-blue-600 ml-1">[Link]</a>
+                </div>
+                <div class="flex items-center gap-4 text-sm py-1 border-b border-slate-50 last:border-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span class="font-bold text-blue-600 w-12 flex-shrink-0">2021</span>
+                    <span class="text-slate-700">ICMR Best Poster Paper Award (CCF B)</span>
+                    <a href="https://www.acm.org/conferences/best-paper-awards" target="_blank" class="text-blue-400 hover:text-blue-600 ml-1">[Link]</a>
+                </div>
+                <div class="flex items-center gap-4 text-sm py-1 border-b border-slate-50 last:border-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span class="font-bold text-blue-600 w-12 flex-shrink-0">2021</span>
+                    <span class="text-slate-700">ImageCLEF Medical VQA Competition, First Prize</span>
+                    <a href="http://ceur-ws.org/Vol-2936/paper-99.pdf" target="_blank" class="text-blue-400 hover:text-blue-600 ml-1">[Link]</a>
+                </div>
+                <div class="flex items-center gap-4 text-sm py-1 border-b border-slate-50 last:border-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span class="font-bold text-blue-600 w-12 flex-shrink-0">2020</span>
+                    <span class="text-slate-700">Distinguished graduates in NCU (10/10000)</span>
+                </div>
+            </div>
         </section>
 
+        <!-- PROFESSIONAL -->
         <section>
-          <SectionTitle icon={Briefcase}>Professional Activities</SectionTitle>
-          <div className="space-y-4 text-sm text-slate-700">
-            <div className="flex gap-4">
-              <span className="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Editorial</span>
-              <p><strong>Associate Editor</strong> for Discover Artificial Intelligence, Discover Imaging</p>
+            <div class="flex items-center gap-3 mb-6 mt-12 border-b border-slate-200 pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <h2 class="text-xl font-bold text-slate-800 tracking-tight">Professional Activities</h2>
             </div>
-            <div className="flex gap-4">
-              <span className="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Memberships</span>
-              <p>Member of IEEE, ACM, AAAI, and MICCAI.</p>
+            <div class="space-y-4 text-sm text-slate-700">
+                <div class="flex gap-4">
+                    <span class="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Editorial</span>
+                    <p><strong>Associate Editor</strong> for Discover Artificial Intelligence, Discover Imaging</p>
+                </div>
+                <div class="flex gap-4">
+                    <span class="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Memberships</span>
+                    <p>Member of IEEE, ACM, AAAI, and MICCAI.</p>
+                </div>
+                <div class="flex gap-4">
+                    <span class="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Reviewer</span>
+                    <div class="space-y-2">
+                        <p>npj Digital Medicine, Patterns, Artificial Intelligence in Medicine, IEEE IoT Journal, The Visual Computer, IEEE Access, Scientific Reports.</p>
+                        <p>Regular Reviewer for NeurIPS, ICML, ICLR, CVPR, ICCV, AAAI, MICCAI, AISTAT, etc. since 2024.</p>
+                    </div>
+                </div>
             </div>
-            <div className="flex gap-4">
-              <span className="font-bold text-slate-400 uppercase text-[10px] w-32 mt-1">Reviewer</span>
-              <div className="space-y-2">
-                <p>npj Digital Medicine, Patterns, Artificial Intelligence in Medicine, IEEE IoT Journal, The Visual Computer, IEEE Access, Scientific Reports.</p>
-                <p>Regular Reviewer for NeurIPS, ICML, ICLR, CVPR, ICCV, AAAI, MICCAI, AISTAT, etc. since 2024.</p>
-              </div>
-            </div>
-          </div>
         </section>
-      </main>
 
-      <footer className="bg-slate-900 text-slate-400 py-12 mt-20">
-        <div className="max-w-4xl mx-auto px-6 flex flex-col items-center gap-8">
-          <div id="clustrmaps-container" className="w-40 h-40 bg-slate-800 rounded-lg overflow-hidden flex items-center justify-center"></div>
-          
-          <div className="text-center">
-            <span id="busuanzi_container_site_pv" className="text-xs font-medium bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
-              Total views: <span id="busuanzi_value_site_pv" className="text-blue-400 font-bold">...</span>
-            </span>
-            <p className="mt-6 text-[10px] uppercase tracking-widest opacity-50">
-              &copy; {new Date().getFullYear()} Haifan Gong | Last updated: Dec. 2025
-            </p>
-          </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col items-center gap-8">
+            <div id="clustrmaps-container" class="w-40 h-40 bg-slate-800 rounded-lg overflow-hidden flex items-center justify-center">
+                <!-- ClustrMaps Script -->
+                <script type="text/javascript" id="clustr-script" src="//cdn.clustrmaps.com/globe.js?d=RFw36KvhGjqV4Z6TT3tINTH5UGaAa3jQVK2psPZZa-8"></script>
+            </div>
+            
+            <div class="text-center">
+                <span id="busuanzi_container_site_pv" class="text-xs font-medium bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
+                    Total views: <span id="busuanzi_value_site_pv" class="text-blue-400 font-bold">...</span>
+                </span>
+                <p class="mt-6 text-[10px] uppercase tracking-widest opacity-50">
+                    &copy; <span id="year"></span> Haifan Gong | Last updated: Dec. 2025
+                </p>
+            </div>
         </div>
-      </footer>
-    </div>
-  );
-};
-				  
-export default App;
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // News Toggle Logic
+        const btn = document.getElementById('toggle-news-btn');
+        const moreNews = document.getElementById('more-news');
+        
+        btn.addEventListener('click', () => {
+            moreNews.classList.toggle('hidden');
+            
+            if (moreNews.classList.contains('hidden')) {
+                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg> More News';
+            } else {
+                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg> Less';
+            }
+        });
+    </script>
+</body>
+</html>
